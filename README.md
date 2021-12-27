@@ -12,10 +12,16 @@ See https://github.com/yidigun/nexus3
 
 ## Use Image
 
+Prepare data volume. (set uid:gid to 1000:1000)
+
+```shell
+mkdir -p /data/nexus/data
+sudo chown -R 1000:1000 /data/nexus/data
+```
+
 Create container.
 
 ```shell
-docker pull docker.io/yidigun/nexus3:latest
 docker run -d \
   --name nexus3 \
   -p 8081:8081/tcp \
