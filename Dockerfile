@@ -1,12 +1,20 @@
-FROM docker.io/library/alpine:3
-
 # nexus oss download url is not opened.
 # you should download nexus-$NEXUS_VERSION-unix.tar.gz file manually.
 # see https://www.sonatype.com/products/repository-oss-download
 
-ENV NEXUS_VERSION=3.37.1-01
-ENV LANG=ko_KR.UTF-8
-ENV TZ=Asia/Seoul
+FROM docker.io/library/alpine:3
+
+ARG IMG_NAME
+ARG IMG_TAG
+ARG LANG=ko_KR.UTF-8
+ARG TZ=Asia/Seoul
+
+ENV IMG_NAME=$IMG_NAME
+ENV IMG_TAG=$IMG_TAG
+ENV LANG=$LANG
+ENV TZ=$TZ
+
+ENV NEXUS_VERSION=$IMG_TAG
 ENV INSTALL4J_JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk
 ENV KARAF_HOME=/opt/nexus
 

@@ -3,28 +3,25 @@
 # System configs
 LANG=${LANG:=ko_KR.UTF-8}
 TZ=${TZ:-Asia/Seoul}
-JAVA_HOME=/usr/lib/jvm/adoptopenjdk-${JAVA_VERSION:=11}-${JAVA_JVM:=hotspot}
-export LANG TZ JAVA_VERSION JAVA_JVM JAVA_HOME
+export LANG TZ
 
-NEXUS_HOME=/opt/nexus
+KARAF_HOME=${KARAF_HOME:-/opt/nexus}
+JAVA_HOME=${JAVA_HOME:-`java -XshowSettings:properties -version 2>&1 > /dev/null | grep 'java.home' | awk '{print $3}'`}
+INSTALL4J_JAVA_HOME=${INSTALL4J_JAVA_HOME:-$JAVA_HOME}
+export KARAF_HOME INSTALL4J_JAVA_HOME JAVA_HOME
 
 CMD=$1; shift
 case $CMD in
   start|run)
-    exec $NEXUS_HOME/bin/nexus run
+    exec $KARAF_HOME/bin/nexus run "$@"
     ;;
-
-  status|restart)
-    exec $NEXUS_HOME/bin/nexus $CMD
-    ;;
-
 
   sh|bash|/bin/sh|/bin/bash|/usr/bin/bash)
     exec /bin/sh "$@"
     ;;
 
   *)
-    echo usage: "$0 { start [ args ... ] | sh [ args ... ] }"
+    echo usage: "$0 { run [ args ... ] | sh [ args ... ] }"
     ;;
 
 esac
