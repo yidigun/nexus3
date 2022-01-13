@@ -2,7 +2,7 @@
 # you should download nexus-$NEXUS_VERSION-unix.tar.gz file manually.
 # see https://www.sonatype.com/products/repository-oss-download
 
-FROM docker.io/library/alpine:3
+FROM docker.io/library/centos:7
 
 ARG IMG_NAME
 ARG IMG_TAG
@@ -15,12 +15,11 @@ ENV LANG=$LANG
 ENV TZ=$TZ
 
 ENV NEXUS_VERSION=$IMG_TAG
-ENV INSTALL4J_JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk
+ENV INSTALL4J_JAVA_HOME=/usr/lib/jvm/jre-1.8.0-openjdk
 ENV KARAF_HOME=/opt/nexus
 
 COPY nexus-$NEXUS_VERSION-unix.tar.gz nexus.* /tmp
-RUN apk update && \
-    apk add tzdata openjdk8-jre-base && \
+RUN yum -y install java-1.8.0-openjdk-headless && \
     mkdir -p /opt && \
     (cd /opt; \
        tar zxf /tmp/nexus-$NEXUS_VERSION-unix.tar.gz && \
@@ -29,8 +28,8 @@ RUN apk update && \
        rmdir sonatype-work) && \
     cp /tmp/nexus.rc /tmp/nexus.vmoptions /opt/nexus/bin && \
     cp /tmp/nexus.properties /opt/nexus/etc && \
-    addgroup -g 1000 nexus && \
-    adduser -u 1000 -D -H -S -G nexus -h /nexus-data nexus && \
+    groupadd -g 1000 nexus && \
+    useradd -u 1000 -g nexus -d /nexus-data nexus && \
     chown -R nexus:nexus /nexus-data && \
     ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && \
     rm -rf /tmp/nexus*

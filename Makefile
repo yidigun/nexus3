@@ -1,7 +1,7 @@
 REPO			= docker.io
 IMG_NAME		= yidigun/nexus3
 
-TAG			= 3.37.1-01
+TAG			= 3.37.3-02
 TEST_ARGS		= -v `pwd`/nexus-data:/nexus-data -p 8081:8081/tcp -p 5001:5001/tcp
 
 IMG_TAG			= $(TAG)
@@ -9,7 +9,7 @@ PUSH			= yes
 BUILDER			= crossbuilder
 PLATFORM		= linux/amd64,linux/arm64
 
-.PHONEY: $(DOCKER_BUILDER) $(TAG) all test
+.PHONEY: $(BUILDER) $(TAG) all test
 
 all:
 	@if [ -z "$(TAG)" ]; then \
@@ -23,7 +23,7 @@ test:
 	for a in $(BUILD_ARGS); do \
 	  BUILD_ARGS="$$BUILD_ARGS --build-arg \"$$a\""; \
 	done; \
-	docker build \
+	docker build --progress=plain \
 	  --build-arg IMG_NAME=$(IMG_NAME) --build-arg IMG_TAG=$(IMG_TAG) $$BUILD_ARGS \
 	  -t $(REPO)/$(IMG_NAME):test . && \
 	docker run -d --rm --name=`basename $(IMG_NAME)` \
@@ -50,7 +50,7 @@ $(TAG): $(BUILDER)
 	eval $$CMD
 
 $(BUILDER):
-	@if docker buildx ls | grep -q ^$(BULDER); then \
+	@if docker buildx ls | grep -q ^$(BUILDER); then \
 	  : do nothing; \
 	else \
 	  CMD="docker buildx create --name $(BUILDER) \
