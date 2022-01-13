@@ -53,5 +53,5 @@ Local build and test image. Specify /nexus-data volume, web port and repository 
 
 ```shell
 mkdir nexus-data
-make test TAG=3.37.1-01 TEST_ARGS="-v `pwd`/nexus-data:nexus-data -p 8081:8081/tcp -p 5001:5001"
+make test TAG=3.37.1-01 TEST_ARGS="-v `pwd`/nexus-data:/nexus-data -p 8081:8081/tcp -p 5001:5001"
 ```
