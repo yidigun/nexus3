@@ -1,12 +1,15 @@
 REPO			= docker.io
 IMG_NAME		= yidigun/nexus3
 
+TAG			= 3.37.1-01
+TEST_ARGS		= -v `pwd`/nexus-data:/nexus-data -p 8081:8081/tcp -p 5001:5001/tcp
+
 IMG_TAG			= $(TAG)
 PUSH			= yes
 BUILDER			= crossbuilder
 PLATFORM		= linux/amd64,linux/arm64
 
-.PHONEY: $(DOCKER_BUILDER) $(TAG) all
+.PHONEY: $(DOCKER_BUILDER) $(TAG) all test
 
 all:
 	@if [ -z "$(TAG)" ]; then \
@@ -14,6 +17,19 @@ all:
 	else \
 	  $(MAKE) $(TAG); \
 	fi
+
+test:
+	BUILD_ARGS=; \
+	for a in $(BUILD_ARGS); do \
+	  BUILD_ARGS="$$BUILD_ARGS --build-arg \"$$a\""; \
+	done; \
+	docker build \
+	  --build-arg IMG_NAME=$(IMG_NAME) --build-arg IMG_TAG=$(IMG_TAG) $$BUILD_ARGS \
+	  -t $(REPO)/$(IMG_NAME):test . && \
+	docker run -d --rm --name=`basename $(IMG_NAME)` \
+	  $(TEST_ARGS) \
+	  $(REPO)/$(IMG_NAME):test \
+	  /bin/sh -c 'while true;do sleep 1;done'
 
 $(TAG): $(BUILDER)
 	@BUILD_ARGS=; \
@@ -28,8 +44,7 @@ $(TAG): $(BUILDER)
 	    --builder $(BUILDER) --platform "$(PLATFORM)" \
 	    --build-arg IMG_NAME=$(IMG_NAME) --build-arg IMG_TAG=$(IMG_TAG) \
 	    $$BUILD_ARGS $$PUSH \
-	    -t $(REPO)/$(IMG_NAME):latest \
-	    -t $(REPO)/$(IMG_NAME):$(IMG_TAG) \
+	    -t $(REPO)/$(IMG_NAME):latest -t $(REPO)/$(IMG_NAME):$(IMG_TAG) \
 	    ."; \
 	echo $$CMD; \
 	eval $$CMD

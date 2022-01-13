@@ -42,6 +42,7 @@ WORKDIR /nexus-data
 USER nexus:nexus
 
 EXPOSE 8081/tcp
+EXPOSE 5000/tcp
 VOLUME /nexus-data
 
 ENTRYPOINT [ "/entrypoint.sh" ]
