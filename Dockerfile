@@ -18,7 +18,7 @@ ENV NEXUS_VERSION=$IMG_TAG
 ENV INSTALL4J_JAVA_HOME=/usr/lib/jvm/jre-1.8.0-openjdk
 ENV KARAF_HOME=/opt/nexus
 
-COPY nexus-$NEXUS_VERSION-unix.tar.gz nexus.* /tmp
+COPY nexus-$NEXUS_VERSION-unix.tar.gz nexus.* /tmp/
 RUN yum -y install java-1.8.0-openjdk-headless && \
     mkdir -p /opt && \
     (cd /opt; \
