@@ -2,7 +2,7 @@
 
 ## Nexus Repository License
 
-See https://github.com/sonatype/nexus-public
+See https://github.com/sonatype/nexus-public and https://help.sonatype.com/repomanager3/product-information/release-notes
 
 ## Dockerfile License
 
