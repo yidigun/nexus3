@@ -1,7 +1,7 @@
 REPO			= docker.io
 IMG_NAME		= yidigun/nexus3
 
-TAG				= 3.37.3-02
+TAG				= 3.38.1-01
 EXTRA_TAGS		= latest
 TEST_ARGS		= -v `pwd`/nexus-data:/nexus-data -p 8081:8081/tcp -p 5001:5001/tcp
 
