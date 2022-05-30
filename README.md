@@ -10,6 +10,15 @@ It's just free. (Public Domain)
 
 See https://github.com/yidigun/nexus3
 
+## Supported tags
+
+Base OS is changed to [Ubuntu]() from ```3.39.0-01```.
+And default locale and timezone also changed to ```en_US.UTF-8``` and ```Etc/UTC```.
+
+* ```3.39.0-01```, ```latest```
+* ```3.38.1-01``` (not supported)
+* ```3.38.1-01``` (not supported)
+
 ## Use Image
 
 Prepare data volume. (set uid:gid to 1000:1000)
@@ -44,7 +53,7 @@ Download from https://www.sonatype.com/products/repository-oss-download
 Check downloaded version and modify TAG macro.
 
 ```shell
-make TAG=3.37.1-01
+make TAG=3.39.0-01
 ```
 
 ### 3. Test image
@@ -53,5 +62,5 @@ Local build and test image. Specify /nexus-data volume, web port and repository 
 
 ```shell
 mkdir nexus-data
-make test TAG=3.37.1-01 TEST_ARGS="-v `pwd`/nexus-data:/nexus-data -p 8081:8081/tcp -p 5001:5001"
+make test TAG=3.39.0-01 TEST_ARGS="-v `pwd`/nexus-data:/nexus-data -p 8081:8081/tcp -p 5001:5001"
 ```

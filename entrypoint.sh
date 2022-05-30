@@ -1,11 +1,17 @@
 #!/bin/sh
 
-# System configs
-LANG=${LANG:=ko_KR.UTF-8}
-TZ=${TZ:-Asia/Seoul}
-export LANG TZ
+# try to set locale and timezone
+if locale -a 2>/dev/null | grep -q "$LANG"; then
+  : do nothing
+else
+  locale-gen $LANG 2>/dev/null
+  update-locale LANG=$LANG 2>/dev/null
+fi
+if [ -n "$TZ" -a -f /usr/share/zoneinfo/$TZ ]; then
+  ln -sf /usr/share/zoneinfo/$TZ /etc/localtime
+fi
 
-KARAF_HOME=${KARAF_HOME:-/opt/nexus}
+KARAF_HOME=${KARAF_HOME:-/opt/sonatype/nexus}
 JAVA_HOME=${JAVA_HOME:-`java -XshowSettings:properties -version 2>&1 > /dev/null | grep 'java.home' | awk '{print $3}'`}
 INSTALL4J_JAVA_HOME=${INSTALL4J_JAVA_HOME:-$JAVA_HOME}
 export KARAF_HOME INSTALL4J_JAVA_HOME JAVA_HOME
@@ -37,6 +43,9 @@ restart() {
 trap stop TERM
 trap stop INT
 trap restart HUP
+
+mkdir -p /nexus-data && \
+chown nexus:nexus /nexus-data
 
 CMD=$1; shift
 case $CMD in
