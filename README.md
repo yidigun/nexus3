@@ -28,13 +28,15 @@ mkdir -p /data/nexus/data
 sudo chown -R 1000:1000 /data/nexus/data
 ```
 
-Create container.
+Create container. To localize for your machine, set ```LANG``` and ```TZ``` environment variables.
 
 ```shell
 docker run -d \
   --name nexus3 \
   -p 8081:8081/tcp \
   -p 5000:5000/tcp \
+  -e LANG=ko_KR.UTF-8 \
+  -e TZ=Asia/Seoul \
   -v /data/nexus/data:/nexus-data \
   docker.io/yidigun/nexus3:latest
 ```
