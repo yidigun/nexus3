@@ -12,7 +12,7 @@ See https://github.com/yidigun/nexus3
 
 ## Supported tags
 
-Base OS is changed to [Ubuntu]() from ```3.39.0-01```.
+Base OS is changed to [Ubuntu](https://hub.docker.com/_/ubuntu) from ```3.39.0-01```.
 And default locale and timezone also changed to ```en_US.UTF-8``` and ```Etc/UTC```.
 
 * ```3.39.0-01```, ```latest```

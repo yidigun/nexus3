@@ -24,7 +24,7 @@ COPY nexus-$NEXUS_VERSION-unix.tar.gz nexus.* /tmp/
 RUN (mkdir -p `dirname $KARAF_HOME` && \
     cd `dirname $KARAF_HOME` && \
     tar zxf /tmp/nexus-$NEXUS_VERSION-unix.tar.gz && \
-    ln -s nexus-3.39.0-01 $KARAF_HOME && \
+    ln -s nexus-$NEXUS_VERSION $KARAF_HOME && \
     mv sonatype-work/nexus3 /nexus-data && \
     rmdir sonatype-work) && \
     cp /tmp/nexus.rc /tmp/nexus.vmoptions $KARAF_HOME/bin && \
